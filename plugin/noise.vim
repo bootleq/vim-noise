@@ -40,7 +40,12 @@ enddef
 def RegisterAutocmdEvents(items: list<dict<any>>)
   augroup noise_auto
     for e in items
-      execute printf('autocmd %s noise#Play(%s)', e.autocmd, e.sound_id->shellescape())
+      var cmd_name = e.autocmd
+
+      if len(cmd_name->split(' ')) == 1
+        cmd_name = cmd_name .. ' *' # default an wild matching |{aupat}|
+      endif
+      execute printf('autocmd %s noise#Play(%s)', cmd_name, e.sound_id->shellescape())
     endfor
   augroup END
 enddef

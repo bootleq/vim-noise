@@ -52,8 +52,8 @@ let g:noise_sounds = [
       \ ]
 
 let g:noise_events = [
-      \   #{name: 'Inserted',     autocmd: 'InsertLeave',    sound_id: 'x11-bell'},
-      \   #{name: 'ale 全數修正', autoload: 'ale#all-fixed', sound_id: 'kunio-powerup'},
+      \   #{name: 'Inserted',    autocmd:  'InsertLeave *', sound_id: 'x11-bell'},
+      \   #{name: 'ale Cleared', autoload: 'ale#all-fixed', sound_id: 'kunio-powerup'},
       \ ]
 ```
 
@@ -61,7 +61,7 @@ Limitations
 -----------
 
 - Currently, doesn't support dynamically reload settings, you have to restart
-  Vim to take effect of changing settings.
+  Vim to take effect of changed settings.
 
 
 

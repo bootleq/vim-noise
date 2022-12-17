@@ -2,17 +2,207 @@
 
 Version:    0.0.1
 Author:     bootleq <bootleq@gmail.com>
-License:    Public Domain
+License:    MIT LICENSE
 Repository: https://github.com/bootleq/vim-noise
 
 ==============================================================================
 CONTENTS                                                      *noise-contents*
 
-    Usage  ................................. |noise-usage|
-    Configuration  ......................... |noise-configuration|
+    Introduction  ............................ |noise-introduction|
+    Architecture  ............................ |noise-architecture|
+    Configuration  ........................... |noise-configuration|
+    Players  ................................. |noise-players|
+    Autoload Events  ......................... |noise-autoload-events-list|
 
 ==============================================================================
-USAGE                                                            *noise-usage*
+INTRODUCTION                                              *noise-introduction*
+
+*noise* provides framework for configure Vim's to play sound when specific
+events happen.
+
+==============================================================================
+ARCHITECTURE                                              *noise-architecture*
+
+The main concepts are Player, Events, and Sounds.
+
+Player~
+
+  Abstract the underlying way Vim plays sound, try to make it portable.
+  See |noise-players|.
+
+Events~
+
+  Define when to play a sound.
+
+  Can target Vim's built-in |autocommand-events|, see |noise-autocmd-events|.
+
+  Also provide autoload functions (only loaded when they were really called)
+  to handle special use cases. See |noise-autoload-events|.
+
+  See |g:noise_events|.
+
+Sounds~
+
+  Define available sounds. |g:noise_sounds|.
+
+
+==============================================================================
+CONFIGURATION                                            *noise-configuration*
+
+Quick example, in legacy Vim syntax:
+>
+  let g:noise_player = 'pactl'
+
+  let g:noise_sounds = [
+        \   #{
+        \     name: 'Bell',
+        \     id:   'x11-bell',
+        \     path: 'event:x11-bell'
+        \   },
+        \   #{
+        \     name: 'Power Up',
+        \     id: 'kunio-powerup',
+        \     path: '/SE/kunio_mg2_powerup-3.wav'},
+        \   #{
+        \     id: 'ikaruga',
+        \     path: '/mnt/c/音效/斑鳩_energy_max.aiff'},
+        \ ]
+
+  let g:noise_events = [
+        \   #{
+        \     name: 'anzu-find-wrapped (not implemented yet)',
+        \     autocmd: 'User AnzuWrapScan',
+        \     sound_id: 'ikaruga'
+        \   },
+        \   #{
+        \     name: 'ale 全部修正',
+        \     autoload: 'ale#all-fixed',
+        \     sound_id: 'kunio-powerup'
+        \   },
+        \ ]
+<
+                                                              *g:noise_player*
+g:noise_player      : string ~
+
+  Preferred Player.
+
+  This must be set, otherwise no further action is taken.
+
+  Currently only "pactl" is available. |noise-player-pactl|
+>
+    let g:noise_player = 'pactl'
+<
+                                                              *g:noise_events*
+g:noise_events      : list<dict> ~
+
+  An event can have below keys:
+>
+    {
+      name:     string  # optional name, only for human understanding
+      autocmd:  string  # Vim autocmd event
+      autoload: string  # autoload functions provided by this plugin
+      sound_id: string  # id of corresponding sound
+    }
+<
+  "sound_id" must be provided and should match available sound setting.
+
+  Either "autocmd" or "autoload" must be provided, as the actual timing.
+
+                                                        *noise-autocmd-events*
+  "autocmd" uses Vim's |autocommand-events|,
+  for example:
+>
+    let g:noise_events = [
+        \   #{autocmd: 'InsertLeave *', sound_id: 'beep'}]
+<
+  adds an `autocmd InsertLeave * noise#Play('beep')` behind the scene.
+  The `*` can be omitted for convenience.
+
+                                                       *noise-autoload-events*
+  "autoload" on the other hand, registers special functions provided by this
+  plugin. Those functions were implemented with |autoload| script thus will
+  only be loaded when |g:noise_events| contain specific key, for example:
+>
+    let g:noise_events = [
+        \   #{autoload: 'ale#all-fixed', sound_id: 'beep'}]
+<
+  will load script `autoload/events/ale.vim` and discover a function serves
+  for `all-fixed` key.
+
+  See |noise-autoload-events-list| for details of each function.
+
+                                                              *g:noise_sounds*
+g:noise_sounds      : list<dict> ~
+
+  A sound can have below keys:
+>
+    {
+      name: string  # optional name, only for human understanding
+      id:   string  # identity of the sound
+      path: string  # how to find the audio resource, e.g., file location
+    }
+<
+  "id" and "path" must be provided.
+
+  Note some backend players only support very restricted characters in "id",
+  e.g., patcal generally doesn't allow space or non-ASCII ones.
+
+  "path" should be absolute path to the audio file.
+
+  The player might eventually unable to play the audio, an error message will
+  be shown in such case: >
+    [Noise] Fail loading sound: 'sound-id' (name: ITS NAME)
+<
+  Some players also support system event sounds, use `event:` prefix in path
+  to represent it, for example `path: 'event:x11-bell'` sends `x11-bell` to
+  patcl player and play the system sound.
+
+
+==============================================================================
+PLAYERS                                                        *noise-players*
+
+Currently only 1 backend player is supported.
+
+Set preferred player with:
+>
+  let g:player = 'pactl'
+<
+                                                          *noise-player-pactl*
+pactl~
+
+  PulseAudio's CLI interface, this should work on WSLg without manually setup.
+
+  https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/CLI/#pactl
+
+  To test if pactl works on your shell:
+>
+    pactl list short samples | cut -f 2
+    # should see available sound names
+
+    pactl play-sample x11-bell
+    # where `x11-bell` is the available name from previous step
+
+    pactl upload-sample {YOUR_AUDIO_FILE} some-id
+    # you can add your sound file, and repeat previous steps to play
+<
+
+==============================================================================
+AUTOLOAD EVENTS DETAIL                            *noise-autoload-events-list*
+
+Here are currently pre-defined autoload events.
+
+                                                *noise-autoload-ale-all-fixed*
+ALE all-fixed~
+
+  Fires after all |ale| lint issues in current buffer were fixed.
+
+  This sets temporary `b:noise_ale_dirty` variable to know the fixing state.
+
+  ALE repo: https://github.com/dense-analysis/ale
+>
+  let g:noise_events = [
+      \   #{autoload: 'ale#all-fixed', sound_id: 'beep'}]
+<
 
 ==============================================================================
 vim:tw=78:fo=tcroq2mM:et:sts=2:sw=2:ft=help:norl:

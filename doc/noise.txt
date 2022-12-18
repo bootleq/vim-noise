@@ -145,7 +145,7 @@ g:noise_sounds      : list<dict> ~
   "id" and "path" must be provided.
 
   Note some backend players only support very restricted characters in "id",
-  e.g., patcal generally doesn't allow space or non-ASCII ones.
+  e.g., pactl generally doesn't allow space or non-ASCII ones.
 
   "path" should be absolute path to the audio file.
 
@@ -155,7 +155,7 @@ g:noise_sounds      : list<dict> ~
 <
   Some players also support system event sounds, use `event:` prefix in path
   to represent it, for example `path: 'event:x11-bell'` sends `x11-bell` to
-  patcl player and play the system sound.
+  pactl player and play the system sound.
 
 
 ==============================================================================

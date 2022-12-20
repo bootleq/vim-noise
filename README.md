@@ -47,15 +47,20 @@ let g:noise_player = 'pactl'
 
 let g:noise_sounds = [
       \   #{name: 'x11 bell', id: 'x11-bell',      path: 'event:x11-bell'},
-      \   #{name: 'Power Up', id: 'kunio-powerup', path: '/SE/kunio_mg2_powerup-3.wav'},
-      \   #{                  id: 'ikaruga',       path: '/mnt/c/音效/斑鳩_energy_max.aiff'},
+      \   #{name: 'Power Up', id: 'kunio-powerup', path: '/mnt/c/SE/kunio_mg2_powerup-3.wav'},
+      \   #{                  id: 'ikaruga',       path: '/mnt/c/SE/斑鳩_energy_max.aiff'},
       \ ]
 
 let g:noise_events = [
-      \   #{name: 'Inserted',    autocmd:  'InsertLeave *', sound_id: 'x11-bell'},
-      \   #{name: 'ale Cleared', autoload: 'ale#all-fixed', sound_id: 'kunio-powerup'},
+      \   #{name: 'Inserted',      autocmd:  'InsertLeave *', sound_id: 'x11-bell'},
+      \   #{name: 'Search wrapped' autocmd:  'User AnzuWrap', sound_id: 'ikaruga'},
+      \   #{name: 'ale Cleared',   autoload: 'ale#all-fixed', sound_id: 'kunio-powerup'},
       \ ]
 ```
+
+- Event `User Anzu` requires [vim-anzu][]
+- Event `ale#all-fixed` requires [ale][]
+
 
 Limitations
 -----------
@@ -68,4 +73,5 @@ Limitations
 [pactl]: https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/CLI/#pactl
 [WSLg]: https://github.com/microsoft/wslg
 [autocommand-events]: https://vimhelp.org/autocmd.txt.html#autocommand-events
+[vim-anzu]: https://github.com/osyo-manga/vim-anzu
 [ale]: https://github.com/dense-analysis/ale

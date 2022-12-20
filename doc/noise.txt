@@ -70,17 +70,23 @@ Quick example, in legacy Vim syntax:
 
   let g:noise_events = [
         \   #{
-        \     name: 'anzu-find-wrapped (not implemented yet)',
-        \     autocmd: 'User AnzuWrapScan',
+        \     name: 'Search wrapped',
+        \     autocmd: 'User AnzuWrap',
         \     sound_id: 'ikaruga'
         \   },
         \   #{
-        \     name: 'ale 全部修正',
+        \     name: 'ale errors all clear',
         \     autoload: 'ale#all-fixed',
         \     sound_id: 'kunio-powerup'
         \   },
         \ ]
 <
+
+  - Event `User AnzuWrap` requires vim-anzu
+    https://github.com/osyo-manga/vim-anzu
+
+  - Event `ale#all-fixed` requires ale
+    https://github.com/dense-analysis/ale
                                                               *g:noise_player*
 g:noise_player      : string ~
 

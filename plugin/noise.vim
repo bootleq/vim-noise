@@ -1,3 +1,8 @@
+if !has('vim9script')
+  echo 'vim-noise requires +vim9script, aborted.'
+  finish
+endif
+
 vim9script noclear
 
 # autoloads to be triggered in RegisterAutoloadEvents

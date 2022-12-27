@@ -38,6 +38,10 @@ export def Handler(path: string, ...args: list<any>)
   call(path, args)
 enddef
 
+def OnPlayError(channel: channel, msg: string)
+  utils.PrintError("Error play sound: " .. msg)
+enddef
+
 export def Play(sound_id: string)
   if !exists('g:noise_player') || !LoadPlayer(g:noise_player)
     return
@@ -52,5 +56,5 @@ export def Play(sound_id: string)
 
   var sound = g:noise_sounds[soundIndex]
 
-  PlayerFunc(sound)
+  PlayerFunc(sound, {err_cb: OnPlayError})
 enddef

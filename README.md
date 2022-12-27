@@ -17,7 +17,7 @@ Architecture
 
   Current supported backends:
 
-  - `pactl`: PulseAudio's [pactl][] CLI, it should work on [WSLg][] without manually setup.
+  - `pulseaudio`: Use PulseAudio's `pactl` and `paplay` [CLI utils][pulseaudio-cli], this should work on [WSLg][] with simply `apt-get install pulseaudio-utils`.
 
 - Events
 
@@ -43,7 +43,7 @@ Config example
 In legacy Vim syntax:
 
 ```vim
-let g:noise_player = 'pactl'
+let g:noise_player = 'pulseaudio'
 
 let g:noise_sounds = [
       \   #{name: 'x11 bell', id: 'x11-bell',      path: 'event:x11-bell'},
@@ -70,7 +70,7 @@ Limitations
 
 
 
-[pactl]: https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/CLI/#pactl
+[pulseaudio-cli]: https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/CLI/
 [WSLg]: https://github.com/microsoft/wslg
 [autocommand-events]: https://vimhelp.org/autocmd.txt.html#autocommand-events
 [vim-anzu]: https://github.com/osyo-manga/vim-anzu

@@ -51,7 +51,7 @@ CONFIGURATION                                            *noise-configuration*
 
 Quick example, in legacy Vim syntax:
 >
-  let g:noise_player = 'pactl'
+  let g:noise_player = 'pulseaudio'
 
   let g:noise_sounds = [
         \   #{
@@ -94,9 +94,9 @@ g:noise_player      : string ~
 
   This must be set, otherwise no further action is taken.
 
-  Currently only "pactl" is available. |noise-player-pactl|
+  Currently only "pulseaudio" is available. |noise-player-pulseaudio|
 >
-    let g:noise_player = 'pactl'
+    let g:noise_player = 'pulseaudio'
 <
                                                               *g:noise_events*
 g:noise_events      : list<dict> ~
@@ -150,9 +150,6 @@ g:noise_sounds      : list<dict> ~
 <
   "id" and "path" must be provided.
 
-  Note some backend players only support very restricted characters in "id",
-  e.g., pactl generally doesn't allow space or non-ASCII ones.
-
   "path" should be absolute path to the audio file.
 
   The player might eventually unable to play the audio, an error message will
@@ -161,7 +158,7 @@ g:noise_sounds      : list<dict> ~
 <
   Some players also support system event sounds, use `event:` prefix in path
   to represent it, for example `path: 'event:x11-bell'` sends `x11-bell` to
-  pactl player and play the system sound.
+  pulseaudio player and play the system sound.
 
 
 ==============================================================================
@@ -171,16 +168,18 @@ Currently only 1 backend player is supported.
 
 Set preferred player with:
 >
-  let g:player = 'pactl'
+  let g:player = 'pulseaudio'
 <
-                                                          *noise-player-pactl*
-pactl~
+                                                     *noise-player-pulseaudio*
+pulseaudio~
 
-  PulseAudio's CLI interface, this should work on WSLg without manually setup.
+  PulseAudio's CLI utils, this should work on WSLg with simply install:
+>
+    apt install pulseaudio-utils
+<
+  https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/CLI
 
-  https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/CLI/#pactl
-
-  To test if pactl works on your shell:
+  To test if pulseaudio works on your shell:
 >
     pactl list short samples | cut -f 2
     # should see available sound names
@@ -188,8 +187,7 @@ pactl~
     pactl play-sample x11-bell
     # where `x11-bell` is the available name from previous step
 
-    pactl upload-sample {YOUR_AUDIO_FILE} some-id
-    # you can add your sound file, and repeat previous steps to play
+    paplay {YOUR_AUDIO_FILE}
 <
 
 ==============================================================================

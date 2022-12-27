@@ -1,7 +1,7 @@
 vim9script noclear
 
 import autoload './utils.vim'
-import autoload './player/pactl.vim'
+import autoload './player/pulseaudio.vim'
 
 # autoloads to be triggered in Handler
 import autoload './events/ale.vim' as events_ale
@@ -17,9 +17,9 @@ export def LoadPlayer(name: string): bool
     return true
   endif
 
-  if name == 'pactl'
-    if pactl.Load()
-      PlayerFunc = pactl.Play
+  if name == 'pulseaudio'
+    if pulseaudio.Load()
+      PlayerFunc = pulseaudio.Play
     endif
   endif
 

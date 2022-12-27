@@ -58,7 +58,7 @@ let g:noise_events = [
       \ ]
 ```
 
-- Event `User Anzu` requires [vim-anzu][]
+- Event `User AnzuWrap` requires [vim-anzu][]
 - Event `ale#all-fixed` requires [ale][]
 
 

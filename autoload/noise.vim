@@ -36,8 +36,24 @@ function! noise#Handler(path, ...) abort
   call call(a:path, a:000)
 endfunction
 
-function! s:OnPlayError(channel, msg) abort
-  call noise#utils#PrintError("Error play sound: " . a:msg)
+function! s:OnPlayError(channel, msg, ...) abort
+  let msg = a:msg
+
+  if type(msg) == type([]) " neovim
+    let msg = join(msg, '')
+  endif
+
+  if !empty(msg)
+    call noise#utils#PrintError("Error play sound: " . msg)
+  endif
+endfunction
+
+function! s:findBy(items, fn) abort
+  for i in a:items
+    if a:fn(i)
+      return i
+    endif
+  endfor
 endfunction
 
 function! noise#Play(sound_id) abort
@@ -45,14 +61,12 @@ function! noise#Play(sound_id) abort
     return
   endif
 
-  let soundIndex = get(g:, 'noise_sounds', [])->indexof({_, s -> s.id == a:sound_id})
+  let sound = s:findBy(get(g:, 'noise_sounds', []), {s -> s.id == a:sound_id})
 
-  if soundIndex < 0
+  if empty(sound)
     call noise#utils#PrintError("Unknown sound id: " . a:sound_id)
     return
   endif
-
-  let sound = g:noise_sounds[soundIndex]
 
   call s:PlayerFunc(sound, #{err_cb: function('s:OnPlayError')})
 endfunction

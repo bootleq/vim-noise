@@ -1,10 +1,10 @@
 vim9script noclear
 
-import autoload './utils.vim'
-import autoload './player/pulseaudio.vim'
+import autoload './noise/utils.vim'
+import autoload './noise/player/pulseaudio.vim'
 
 # autoloads to be triggered in Handler
-import autoload './events/ale.vim' as events_ale
+import autoload './noise/events/ale.vim' as events_ale
 
 var loadedPlayerType: string
 

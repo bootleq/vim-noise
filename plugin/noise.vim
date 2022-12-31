@@ -6,7 +6,7 @@ endif
 vim9script noclear
 
 # autoloads to be triggered in RegisterAutoloadEvents
-import autoload '../autoload/events/ale.vim'
+import autoload '../autoload/noise/events/ale.vim'
 
 if exists("g:loaded_noise")
   finish
@@ -30,7 +30,7 @@ def FilterByKey(items: list<dict<any>>, key: string): list<any>
 enddef
 
 # Consume events have {autoload: 'foo#bar'} property,
-# find corresponding autoload file (../autoload/events/foo.vim) and call its
+# find corresponding autoload file (../autoload/noise/events/foo.vim) and call its
 # Register function with targeted key (bar).
 def RegisterAutoloadEvents(items: list<dict<any>>)
   for e in items

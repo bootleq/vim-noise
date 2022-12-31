@@ -1,60 +1,58 @@
-vim9script noclear
+" import autoload './noise/utils.vim'
+" import autoload './noise/player/pulseaudio.vim'
 
-import autoload './noise/utils.vim'
-import autoload './noise/player/pulseaudio.vim'
+" # autoloads to be triggered in Handler
+" import autoload './noise/events/ale.vim' as events_ale
 
-# autoloads to be triggered in Handler
-import autoload './noise/events/ale.vim' as events_ale
+let s:loadedPlayerType = ''
 
-var loadedPlayerType: string
+let s:PlayerFunc = v:null
 
-var PlayerFunc: func
-
-# Ensure the g:noise_player is available.
-# Store the result and backend Play function.
-export def LoadPlayer(name: string): bool
-  if !empty(loadedPlayerType)
-    return true
+" Ensure the g:noise_player is available.
+" Store the result and backend Play function.
+function! s:LoadPlayer(name) abort
+  if !empty(s:loadedPlayerType)
+    return v:true
   endif
 
-  if name == 'pulseaudio'
-    if pulseaudio.Load()
-      PlayerFunc = pulseaudio.Play
+  if a:name == 'pulseaudio'
+    if noise#player#pulseaudio#Load()
+      let s:PlayerFunc = function('noise#player#pulseaudio#Play')
     endif
   endif
 
-  if empty(PlayerFunc)
-    utils.PrintError(printf("Can't load player '%s'", name))
-    return false
+  if empty(s:PlayerFunc)
+    call noise#utils#PrintError(printf("Can't load player '%s'", a:name))
+    return v:false
   else
-    loadedPlayerType = name
-    return true
+    let s:loadedPlayerType = a:name
+    return v:true
   endif
-enddef
+endfunction
 
-# To export autoload handler functions, e.g.,
-#   noise#Handler("events_ale.ALELintPost", %s)
-export def Handler(path: string, ...args: list<any>)
-  call(path, args)
-enddef
+" To export autoload handler functions, e.g.,
+"   noise#Handler("events_ale.ALELintPost", %s)
+function! noise#Handler(path, ...) abort
+  call call(a:path, a:000)
+endfunction
 
-def OnPlayError(channel: channel, msg: string)
-  utils.PrintError("Error play sound: " .. msg)
-enddef
+function! s:OnPlayError(channel, msg) abort
+  call noise#utils#PrintError("Error play sound: " . a:msg)
+endfunction
 
-export def Play(sound_id: string)
-  if !exists('g:noise_player') || !LoadPlayer(g:noise_player)
+function! noise#Play(sound_id) abort
+  if !exists('g:noise_player') || !s:LoadPlayer(g:noise_player)
     return
   endif
 
-  var soundIndex = get(g:, 'noise_sounds', [])->indexof((_, s) => s.id == sound_id)
+  let soundIndex = get(g:, 'noise_sounds', [])->indexof({_, s -> s.id == a:sound_id})
 
   if soundIndex < 0
-    utils.PrintError("Unknown sound id: " .. sound_id)
+    call noise#utils#PrintError("Unknown sound id: " . a:sound_id)
     return
   endif
 
-  var sound = g:noise_sounds[soundIndex]
+  let sound = g:noise_sounds[soundIndex]
 
-  PlayerFunc(sound, {err_cb: OnPlayError})
-enddef
+  call s:PlayerFunc(sound, #{err_cb: function('s:OnPlayError')})
+endfunction

@@ -1,21 +1,19 @@
-vim9script noclear
+" import autoload '../utils.vim'
 
-import autoload '../utils.vim'
-
-export def Load(): bool
+function! noise#player#pulseaudio#Load() abort
   if executable('pactl') && executable('paplay')
-    return true
+    return v:true
   endif
 
-  return false
-enddef
+  return v:false
+endfunction
 
-export def Play(sound: dict<any>, job_options: dict<any>): any
-  var event_sound_name = sound.path->match('^event:') > -1 ? sound.path->strpart(len('event:')) : ''
+function! noise#player#pulseaudio#Play(sound, job_options) abort
+  let event_sound_name = a:sound.path->match('^event:') > -1 ? a:sound.path->strpart(len('event:')) : ''
 
   if !empty(event_sound_name)
-    return job_start(['pactl', 'play-sample', event_sound_name], job_options)
+    return job_start(['pactl', 'play-sample', event_sound_name], a:job_options)
   endif
 
-  return job_start(['paplay', sound.path], job_options)
-enddef
+  return job_start(['paplay', a:sound.path], a:job_options)
+endfunction

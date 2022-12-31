@@ -1,11 +1,9 @@
-vim9script noclear
+function! noise#utils#PrintError(msg, ...) abort
+  let full_msg = "[Noise] " . a:msg
 
-export def PrintError(msg: string, raise: bool = false)
-  var full_msg = "[Noise] " .. msg
-
-  if raise
+  if a:0 > 0 && a:1
     echoerr full_msg
   else
     echohl ErrorMsg | echomsg full_msg | echohl None
   endif
-enddef
+endfunction

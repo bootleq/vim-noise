@@ -5,7 +5,11 @@ Make sound response when event happen.
 
 Status: developing, **not stable**
 
-Tested Vim version: `9.0.1062`
+
+Tested Vim versions:
+
+- Vim `9.0.1062`
+- NVIM `v0.8.2`
 
 
 Architecture

@@ -1,0 +1,30 @@
+set encoding=utf-8
+call themis#option('recursive', 1)
+call themis#option('exclude', [
+      \  'test/vim-themis/',
+      \  'test/runtime/',
+      \])
+
+let g:Expect = themis#helper('expect')
+call themis#helper('command').with(themis#helper('assert')).with({'Expect': g:Expect})
+
+" Additional noise runtime for test
+set runtimepath+=./test/runtime
+
+" Record of player call, fulfilled by fake player.
+" Each item has the shape {sound: dict, job: dict}
+let g:noise_test_played = []
+
+language C
+
+
+" Basic setting
+let g:noise_player = 'test'
+let g:noise_sounds = [
+      \   #{id: 'se1', path: 'event:x11-bell'},
+      \   #{id: 'se2', path: 'event:x11-bell'},
+      \ ]
+let g:noise_events = [
+      \   #{autocmd: 'User test_1', sound_id: 'se1'},
+      \   #{autocmd: 'User test_2', sound_id: 'se2'},
+      \ ]

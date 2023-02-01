@@ -15,10 +15,14 @@ function! s:LoadPlayer(name) abort
     return v:true
   endif
 
-  if a:name == 'pulseaudio'
-    if noise#player#pulseaudio#Load()
-      let s:PlayerFunc = function('noise#player#pulseaudio#Play')
-    endif
+  if !empty(a:name)
+    try
+      " e.g., call noise#player#pulseaudio#Load() to get noise#player#pulseaudio#Play()
+      let prefix = printf('noise#player#%s', substitute(a:name, '\W', '_', 'g'))
+      if call(prefix . '#Load', [])
+        let s:PlayerFunc = function(prefix . '#Play')
+      endif
+    endtry
   endif
 
   if empty(s:PlayerFunc)

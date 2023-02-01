@@ -73,9 +73,21 @@ Limitations
   Vim to take effect of changed settings.
 
 
+Development
+-----------
+
+### Test
+
+Run the test script, will clone [vim-themis][] and execute it.
+
+```sh
+./test/run.sh
+```
+
 
 [pulseaudio-cli]: https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/CLI/
 [WSLg]: https://github.com/microsoft/wslg
 [autocommand-events]: https://vimhelp.org/autocmd.txt.html#autocommand-events
 [vim-anzu]: https://github.com/osyo-manga/vim-anzu
 [ale]: https://github.com/dense-analysis/ale
+[vim-themis]: https://github.com/thinca/vim-themis

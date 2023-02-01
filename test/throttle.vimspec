@@ -1,0 +1,15 @@
+Describe Throttle
+  It throttles repeated plays within short period
+    let begin_time = localtime()
+    doautocmd User test_1
+    doautocmd User test_1
+    doautocmd User test_2
+    doautocmd User test_1
+    let elapsed = localtime() - begin_time
+    let played = copy(g:noise_test_played)->map({idx, x -> x['sound']['id']})
+
+    Assert Compare(elapsed, '<', 100, 'Expect test events fired in short period')
+    Assert LengthOf(g:noise_test_played, 2, 'Expect number of play throttled')
+    Assert Equals(played, ['se1', 'se2'])
+  End
+End

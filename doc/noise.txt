@@ -80,6 +80,8 @@ Quick example, in legacy Vim syntax:
         \     sound_id: 'kunio-powerup'
         \   },
         \ ]
+
+  let g:noise_throttle_timeout = 140  -- default is 200
 <
 
   - Event `User AnzuWrap` requires vim-anzu
@@ -160,6 +162,13 @@ g:noise_sounds      : list<dict> ~
   to represent it, for example `path: 'event:x11-bell'` sends `x11-bell` to
   pulseaudio player and play the system sound.
 
+                                                    *g:noise_throttle_timeout*
+g:noise_throttle_timeout      : number ~
+
+  A small window of time in millisecond, to prevent playing a event sound
+  quickly within short period of time. Default is `200`.
+
+  This throttle is set per event, different events can still play together.
 
 ==============================================================================
 PLAYERS                                                        *noise-players*

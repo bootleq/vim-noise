@@ -23,6 +23,7 @@ function! s:LoadPlayer(name) abort
       if call(prefix . '#Load', [])
         let s:PlayerFunc = function(prefix . '#Play')
       endif
+    catch /^Vim\%((\a\+)\)\=:E117: Unknown function/
     endtry
   endif
 

@@ -7,6 +7,7 @@
 let s:loadedPlayerType = ''
 
 let s:PlayerFunc = v:null
+let s:timers = {} " stores throttle timer per event id
 
 " Ensure the g:noise_player is available.
 " Store the result and backend Play function.
@@ -60,9 +61,25 @@ function! s:findBy(items, fn) abort
   endfor
 endfunction
 
-function! noise#Play(sound_id) abort
+function! s:remove_timer(event_id, id) abort " {{{
+  call timer_stop(a:id)
+  if has_key(s:timers, a:event_id)
+    call remove(s:timers, a:event_id)
+  endif
+endfunction " }}}
+
+function! noise#Play(sound_id, ...) abort
+  let event_id = a:1
+  let throttle_timeout = get(g:, 'noise_throttle_timeout', 200)
+
   if !exists('g:noise_player') || !s:LoadPlayer(g:noise_player)
     return
+  endif
+
+  if has_key(s:timers, event_id)
+    return
+  else
+    let s:timers[event_id] = timer_start(throttle_timeout, function('s:remove_timer', [event_id]))
   endif
 
   let sound = s:findBy(get(g:, 'noise_sounds', []), {s -> s.id == a:sound_id})

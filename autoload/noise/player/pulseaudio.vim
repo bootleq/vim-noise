@@ -29,5 +29,6 @@ function! noise#player#pulseaudio#Play(sound, job_options) abort
     return s:JobStart(['pactl', 'play-sample', event_sound_name], a:job_options)
   endif
 
-  return s:JobStart(['paplay', a:sound.path], a:job_options)
+  let args = get(g:, 'noise_player_args', ['--latency-msec=200'])
+  return s:JobStart(['paplay'] + args + [a:sound.path], a:job_options)
 endfunction

@@ -82,6 +82,7 @@ Quick example, in legacy Vim syntax:
         \ ]
 
   let g:noise_throttle_timeout = 140  -- default is 200
+  let g:noise_player_args = ['--latency-msec=200']
 <
 
   - Event `User AnzuWrap` requires vim-anzu
@@ -170,6 +171,12 @@ g:noise_throttle_timeout      : number ~
 
   This throttle is set per event, different events can still play together.
 
+                                                         *g:noise_player_args*
+g:noise_player_args      : list<string> ~
+
+  Extra command arguments for the player command.
+  Each player has different default value.
+
 ==============================================================================
 PLAYERS                                                        *noise-players*
 
@@ -198,6 +205,13 @@ pulseaudio~
 
     paplay {YOUR_AUDIO_FILE}
 <
+                                         *noise-player-pulseaudio-player_args*
+  player_args |g:noise_player_args|
+
+    Default: `['--latency-msec=200']`
+
+    The value is only applied when playing sound files (with `paplay`), has no
+    effect for "system sound" plays (with `pactl play-sample` internally).
 
 ==============================================================================
 AUTOLOAD EVENTS DETAIL                            *noise-autoload-events-list*

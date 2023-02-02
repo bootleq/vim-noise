@@ -60,6 +60,9 @@ let g:noise_events = [
       \   #{name: 'Search wrapped' autocmd:  'User AnzuWrap', sound_id: 'ikaruga'},
       \   #{name: 'ale Cleared',   autoload: 'ale#all-fixed', sound_id: 'kunio-powerup'},
       \ ]
+
+let g:noise_throttle_timeout = 140  " default is 200
+let g:noise_player_args      = ['--latency-msec=200']
 ```
 
 - Event `User AnzuWrap` requires [vim-anzu][]

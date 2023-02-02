@@ -81,7 +81,7 @@ Quick example, in legacy Vim syntax:
         \   },
         \ ]
 
-  let g:noise_throttle_timeout = 140  -- default is 200
+  let g:noise_throttle_timeout = 140  " default is 200
   let g:noise_player_args = ['--latency-msec=200']
 <
 

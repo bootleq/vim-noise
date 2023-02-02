@@ -70,7 +70,7 @@ function! s:remove_timer(event_id, id) abort " {{{
 endfunction " }}}
 
 function! noise#Play(sound_id, ...) abort
-  let event_id = a:1
+  let event_id = a:0 ? a:1 : -1
   let throttle_timeout = get(g:, 'noise_throttle_timeout', 200)
 
   if !exists('g:noise_player') || !s:LoadPlayer(g:noise_player)

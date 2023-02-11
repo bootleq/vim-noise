@@ -24,6 +24,7 @@ endfunction " }}}
 "                 path: string>
 "
 " type Event dict<?name: string
+"                 ?id: number
 "                 ?autoload: string
 "                 ?autocmd: string
 "                 sound_id: string>

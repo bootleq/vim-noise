@@ -98,7 +98,7 @@ g:noise_player      : string ~
 
   This must be set, otherwise no further action is taken.
 
-  Currently "pulseaudio", "afplay" are available. |noise-player-pulseaudio|
+  Currently available players: "pulseaudio", "afplay", and "vimsound".
 >
     let g:noise_player = 'pulseaudio'
 <
@@ -241,6 +241,18 @@ afplay~
     afplay /System/Library/Sounds/Glass.aiff
 <
                                              *noise-player-afplay-player_args*
+  player_args |g:noise_player_args|
+
+    Default: `[]`
+
+    There is no args for this player.
+
+                                                       *noise-player-vimsound*
+vimsound~
+
+  Use Vim's sound functions, require *+sound* support.
+
+                                           *noise-player-vimsound-player_args*
   player_args |g:noise_player_args|
 
     Default: `[]`

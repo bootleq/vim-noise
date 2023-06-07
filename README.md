@@ -22,6 +22,7 @@ Architecture
   Current supported backends:
 
   - `pulseaudio`: Use PulseAudio's `pactl` and `paplay` [CLI utils][pulseaudio-cli], this should work on [WSLg][] with simply `apt-get install pulseaudio-utils`.
+  - `afplay`: Use macOS' `afplay` utility.
 
 - Events
 

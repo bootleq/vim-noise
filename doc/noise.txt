@@ -11,6 +11,7 @@ CONTENTS                                                      *noise-contents*
     Introduction  ............................ |noise-introduction|
     Architecture  ............................ |noise-architecture|
     Configuration  ........................... |noise-configuration|
+    Functions  ...........................     |noise-functions|
     Players  ................................. |noise-players|
     Autoload Events  ......................... |noise-autoload-events-list|
 
@@ -176,6 +177,20 @@ g:noise_player_args      : list<string> ~
 
   Extra command arguments for the player command.
   Each player has different default value.
+
+==============================================================================
+FUNCTIONS                                                    *noise-functions*
+
+                                                                *noise#Play()*
+noise#Play({id} [, event_id])~
+
+  Play a sound where {id} can be the key in |g:noise_sounds|.
+
+  Also support directly play audio file with {id} in `file:/path/to/file`
+  format, or system event sound with {id} in `event:xxx` format when the
+  player supports it.
+
+  Extra argument {event_id} is mainly for internal use for throttle control.
 
 ==============================================================================
 PLAYERS                                                        *noise-players*

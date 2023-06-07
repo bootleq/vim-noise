@@ -84,10 +84,16 @@ function! noise#Play(sound_id, ...) abort
     let s:timers[event_id] = timer_start(throttle_timeout, function('s:remove_timer', [event_id]))
   endif
 
-  let sound = s:findBy(get(g:, 'noise_sounds', []), {s -> s.id == a:sound_id})
+  if match(a:sound_id, '^file:') > -1
+    let sound = #{path: a:sound_id->substitute('^file:', '', '')}
+  elseif match(a:sound_id, '^event:') > -1
+    let sound = #{path: a:sound_id}
+  else
+    let sound = s:findBy(get(g:, 'noise_sounds', []), {s -> s.id == a:sound_id})
+  endif
 
   if empty(sound)
-    call noise#utils#PrintError("Unknown sound id: " . a:sound_id)
+    call noise#utils#PrintError("Unrecognized sound: " . a:sound_id)
     return
   endif
 

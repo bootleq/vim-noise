@@ -69,6 +69,18 @@ let g:noise_player_args      = ['--latency-msec=200']
 - Event `ale#all-fixed` requires [ale][]
 
 
+Functions
+---------
+
+- `noise#Play({id}[, event_id])`
+
+  Examples:
+
+  `call noise#Play('some-id')` (`some-id` must be a key in `g:noise_sounds` dictionary)
+  `call noise#Play('file:/mnt/c/SE/foo.mp3')`
+  `call noise#Play('event:x11-bell')`
+
+
 Limitations
 -----------
 

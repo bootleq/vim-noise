@@ -1,6 +1,6 @@
 CHANGES
 =======
 
-## 0.0.1 (2022-12-xx)
+## 0.0.1 (2023-06-07)
 
-* Not released.
+* Initial release.

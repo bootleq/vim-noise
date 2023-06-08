@@ -98,7 +98,7 @@ g:noise_player      : string ~
 
   This must be set, otherwise no further action is taken.
 
-  Currently only "pulseaudio" is available. |noise-player-pulseaudio|
+  Currently available players: "pulseaudio", "afplay", and "vimsound".
 >
     let g:noise_player = 'pulseaudio'
 <
@@ -195,12 +195,6 @@ noise#Play({id} [, event_id])~
 ==============================================================================
 PLAYERS                                                        *noise-players*
 
-Currently only 1 backend player is supported.
-
-Set preferred player with:
->
-  let g:player = 'pulseaudio'
-<
                                                      *noise-player-pulseaudio*
 pulseaudio~
 
@@ -227,6 +221,37 @@ pulseaudio~
 
     The value is only applied when playing sound files (with `paplay`), has no
     effect for "system sound" plays (with `pactl play-sample` internally).
+
+
+                                                         *noise-player-afplay*
+afplay~
+
+  Built-in command line utility of macOS.
+
+  This player doesn't support event sounds.
+>
+  To test if afplay works on your shell:
+>
+    afplay /System/Library/Sounds/Glass.aiff
+<
+                                             *noise-player-afplay-player_args*
+  player_args |g:noise_player_args|
+
+    Default: `[]`
+
+    There is no args for this player.
+
+                                                       *noise-player-vimsound*
+vimsound~
+
+  Use Vim's sound functions, require *+sound* support.
+
+                                           *noise-player-vimsound-player_args*
+  player_args |g:noise_player_args|
+
+    Default: `[]`
+
+    There is no args for this player.
 
 ==============================================================================
 AUTOLOAD EVENTS DETAIL                            *noise-autoload-events-list*

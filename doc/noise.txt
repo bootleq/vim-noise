@@ -195,12 +195,6 @@ noise#Play({id} [, event_id])~
 ==============================================================================
 PLAYERS                                                        *noise-players*
 
-Currently supported backend players: pulseaudio / afplay.
-
-Set preferred player with:
->
-  let g:player = 'pulseaudio'
-<
                                                      *noise-player-pulseaudio*
 pulseaudio~
 

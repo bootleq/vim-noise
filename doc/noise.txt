@@ -1,6 +1,6 @@
 *noise.txt*                              Make sound response when event happen
 
-Version:    0.0.1
+Version:    1.0.0
 Author:     bootleq <bootleq@gmail.com>
 License:    MIT LICENSE
 Repository: https://github.com/bootleq/vim-noise

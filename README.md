@@ -57,6 +57,7 @@ let g:noise_sounds = [
 
 let g:noise_events = [
       \   #{name: 'Inserted',      autocmd:  'InsertLeave *', sound_id: 'x11-bell'},
+      \   #{name: 'SearchWrapped'  autocmd:  'SearchWrapped', sound_id: 'ikaruga'},
       \   #{name: 'Search wrapped' autocmd:  'User AnzuWrap', sound_id: 'ikaruga'},
       \   #{name: 'ale Cleared',   autoload: 'ale#all-fixed', sound_id: 'kunio-powerup'},
       \ ]

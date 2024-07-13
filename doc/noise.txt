@@ -71,6 +71,11 @@ Quick example, in legacy Vim syntax:
 
   let g:noise_events = [
         \   #{
+        \     name: 'SearchWrapped',
+        \     autocmd: 'SearchWrapped',
+        \     sound_id: 'ikaruga'
+        \   },
+        \   #{
         \     name: 'Search wrapped',
         \     autocmd: 'User AnzuWrap',
         \     sound_id: 'ikaruga'
